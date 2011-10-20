@@ -23,6 +23,7 @@ $routes1->add('hello3', new Route(
     '/hello/{name}',
     array('name' => 'World')
 ));
+$routes1->add('hello4', new Route('/hello_{name}^{age}', array('name' => 'World', 'age' => 20)));
 
 $routes2 = new RouteCollection();
 $routes2->add('dir1', new Route('/dir'));
@@ -36,4 +37,5 @@ $matcher = new UrlMatcher($routes1, $context);
 
 print_r($matcher->match('/hello'));
 print_r($matcher->match('/hello/Tobias'));
+print_r($matcher->match('/hello_Tobias^25'));
 print_r($matcher->match('/ls/dir'));
