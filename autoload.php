@@ -15,5 +15,3 @@ $loader->registerNamespaces(array(
 ));
 
 DebugUniversalClassLoader::enable();
-
-$m = new MapClassLoader();
