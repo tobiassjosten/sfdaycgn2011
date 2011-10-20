@@ -3,6 +3,7 @@
 require_once __DIR__.'/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 $request = Request::createFromGlobals();
 
@@ -26,3 +27,10 @@ $request->headers->get('Accept-Language');
 
 $pathInfo = $request->getPathInfo();
 echo $pathInfo."\n";
+
+$response = new Response('foo', 200, array(
+    'Content-Type' => 'text/plain',
+));
+$response->headers->set('Content-Type', 'application/json');
+
+echo $response;
