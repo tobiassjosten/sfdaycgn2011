@@ -27,6 +27,8 @@ $routes1->add('hello3', new Route(
 ));
 $routes1->add('hello4', new Route('/hello_{name}^{age}', array('name' => 'World', 'age' => 20)));
 
+$routes1->add('path', new Route('/file/{path}', array(), array('path' => '.*')));
+
 $routes2 = new RouteCollection();
 $routes2->add('dir1', new Route('/dir'));
 $routes2->add('dir2', new Route('/dir/'));
@@ -41,6 +43,7 @@ print_r($matcher->match('/hello'));
 print_r($matcher->match('/hello/Tobias'));
 print_r($matcher->match('/hello_Tobias^25'));
 print_r($matcher->match('/ls/dir'));
+print_r($matcher->match('/file/foo/bar'));
 
 $compiler = new RouteCompiler();
 $compiler->compile(new Route('/hello', array('name' => 'World')));
