@@ -16,16 +16,22 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 // Configuration.
 
+class Hello
+{
+    public function index($name)
+    {
+        return new Response('Hello '.$name);
+    }
+}
+
 $routes = new RouteCollection();
-$routes->add('hello', new Route('/hello/{name}', array(
-    '_controller' => function($name, $foo) {
-        return new Response('Hello '.$name.' '.$foo);
-    },
+$routes->add('hello1', new Route('/hello1/{name}', array(
+    '_controller' => 'Hello::index',
     'name' => 'World',
     'foo' => 'bar',
 )));
 
-$request = Request::create('/hello/Tobias');
+$request = Request::create('/hello1/Tobias');
 
 $context = new RequestContext();
 $context->fromRequest($request);
