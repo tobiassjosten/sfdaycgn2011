@@ -7,6 +7,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCompiler;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 
 $routes1 = new RouteCollection();
@@ -43,3 +44,6 @@ print_r($matcher->match('/ls/dir'));
 
 $compiler = new RouteCompiler();
 $compiler->compile(new Route('/hello', array('name' => 'World')));
+
+$generator = new UrlGenerator($routes1, $context);
+echo $generator->generate('hello2', array('name' => 'Sven'));
