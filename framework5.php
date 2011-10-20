@@ -11,6 +11,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCompiler;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 // Configuration.
 
@@ -28,11 +29,20 @@ $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 
-$request->attributes->add($matcher->match($request->getPathInfo()));
+try {
+    $request->attributes->add($matcher->match($request->getPathInfo()));
 
-$response = call_user_func(
-    $request->attributes->get('_controller'),
-    $request
-);
+    $response = call_user_func(
+        $request->attributes->get('_controller'),
+        $request
+    );
+}
+catch (ResourceNotFoundException $e) {
+    $response = new Response('Not Found', 404);
+}
+catch (Exception $e) {
+    $response = new Response('An error occured', 500);
+}
+
 
 $response->send();
