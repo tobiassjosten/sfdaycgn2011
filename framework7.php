@@ -5,6 +5,8 @@ require_once __DIR__.'/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\HttpCache\HttpCache;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RouteCollection;
@@ -21,7 +23,10 @@ class Hello
 {
     public function index($name)
     {
-        return new Response('Hello '.$name);
+        $response = new Response('Hello '.$name);
+        $response->setTtl(10);
+
+        return $response;
     }
 }
 
@@ -69,5 +74,8 @@ $resolver = new ControllerResolver();
 
 $framework = new Framework($matcher, $resolver);
 
+$store = new Store(__DIR__.'/cache');
+$framework = new HttpCache($framework, $store);
+
 $response = $framework->handle($request);
-$response->send();
+echo $response;
