@@ -41,5 +41,5 @@ print_r($matcher->match('/hello/Tobias'));
 print_r($matcher->match('/hello_Tobias^25'));
 print_r($matcher->match('/ls/dir'));
 
-$compiler = new RouteCompiler(new Route('/hello', array('name' => 'World')));
-$compiler->compile());
+$compiler = new RouteCompiler();
+$compiler->compile(new Route('/hello', array('name' => 'World')));
