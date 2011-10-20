@@ -25,4 +25,6 @@ $container
     ->addArgument(new Reference('bar'))
 ;
 
-$container->get('foo')->drink();
+echo 'foo:'.spl_object_hash($container->get('foo'))."\n";
+echo 'foo:'.spl_object_hash($container->get('foo'))."\n";
+echo 'bar:'.spl_object_hash($container->get('bar'))."\n";
