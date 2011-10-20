@@ -8,6 +8,7 @@ class Bar
 class Foo
 {
     public function __construct(Bar $bar) { $this->bar = $bar; }
+    public function init(Bar $bar) { echo "Initialized!\n"; }
     public function drink() { $this->bar->drink(); }
 }
 
@@ -23,6 +24,7 @@ $container->register('bar', 'Bar');
 $container
     ->register('foo', 'Foo')
     ->addArgument(new Reference('bar'))
+    ->addMethodCall('init', array(new Reference('bar')))
 ;
 
 echo 'foo:'.spl_object_hash($container->get('foo'))."\n";
