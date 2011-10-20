@@ -4,6 +4,8 @@ require_once __DIR__.'/autoload.php';
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MyEvent extends Event
 {
@@ -18,19 +20,35 @@ class MyEvent extends Event
     }
 }
 
-$dispatcher = new EventDispatcher();
+class MySubscriber implements EventSubscriberInterface
+{
+    public function onMyEvent1(MyEvent $event)
+    {
+        $event->stopPropagation();
+        $event->setMessage('Bar');
+    }
 
-$dispatcher->addListener('my_event', function(Event $event) {
-    echo 'Bar';
-});
-$dispatcher->addListener('my_event', function(Event $event) {
-    $event->stopPropagation();
-    $event->setMessage('Bar');
-}, 1);
+    public function onMyEvent2(MyEvent $event)
+    {
+        echo 'Foo';
+    }
+
+    static public function getSubscribedEvents()
+    {
+        return array(
+            'my_event1' => 'onMyEvent1',
+            'my_event2' => 'onMyEvent2',
+        );
+    }
+}
+
+$dispatcher = new EventDispatcher();
+$dispatcher->addSubscriber(new MySubscriber());
 
 $event = new MyEvent();
 $event->setMessage('Foo');
 
-$dispatcher->dispatch('my_event', $event);
+$dispatcher->dispatch('my_event1', $event);
+$dispatcher->dispatch('my_event2', $event);
 
 echo $event->getMessage();
