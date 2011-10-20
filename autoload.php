@@ -8,6 +8,8 @@ use Symfony\Component\ClassLoader\MapClassLoader;
 $loader = new UniversalClassLoader();
 $loader->register();
 
-$loader->registerNamespace('Symfony', __DIR__.'/symfony/src');
+$loader->registerNamespaces(array(
+    'Symfony' =>__DIR__.'/symfony/src'
+));
 
 $m = new MapClassLoader();
