@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCompiler;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 
 
 $routes1 = new RouteCollection();
@@ -18,7 +19,6 @@ $routes1->add('hello2', new Route(
     array(
         'name' => '\w{3,}',
         '_method' => 'GET',
-        '_scheme' => 'https',
     )
 ));
 $routes1->add('hello3', new Route(
@@ -47,3 +47,6 @@ $compiler->compile(new Route('/hello', array('name' => 'World')));
 
 $generator = new UrlGenerator($routes1, $context);
 echo $generator->generate('hello2', array('name' => 'Sven'));
+
+$dumper = new PhpMatcherDumper($routes1);
+echo $dumper->dump();
