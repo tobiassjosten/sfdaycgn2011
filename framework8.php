@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
+use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 // Configuration.
@@ -67,7 +68,7 @@ class Framework implements HttpKernelInterface
     }
 }
 
-$request = Request::create('/hello1/Tobias');
+$request = Request::create('/hello1/Tobias', 'HEAD');
 
 $context = new RequestContext();
 $context->fromRequest($request);
@@ -75,6 +76,7 @@ $matcher = new UrlMatcher($routes, $context);
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher));
+$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
 $resolver = new ControllerResolver();
 
