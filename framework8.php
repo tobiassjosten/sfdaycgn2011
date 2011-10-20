@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 // Configuration.
@@ -27,10 +28,17 @@ class Hello
 {
     public function index($name)
     {
+        throw new \Exception('Foo Bar');
+
         $response = new Response('Hello '.$name);
         $response->setTtl(10);
 
         return $response;
+    }
+
+    public function exception(Request $request)
+    {
+        return new Response('Exception: '.$request->attributes->get('exception')->getMessage(), 500);
     }
 }
 
@@ -77,6 +85,7 @@ $matcher = new UrlMatcher($routes, $context);
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher));
 $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
+$dispatcher->addSubscriber(new ExceptionListener('Hello::exception'));
 
 $resolver = new ControllerResolver();
 
