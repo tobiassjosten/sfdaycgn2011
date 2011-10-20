@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
+use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 
 // Object description.
 
@@ -33,6 +35,14 @@ $container
 // Configuration.
 
 $container->setParameter('foo.class', 'Foo');
+
+// Dump configuration.
+
+$dumper = new YamlDumper($container);
+echo $dumper->dump();
+
+$dumper = new XmlDumper($container);
+echo $dumper->dump();
 
 // Testing.
 
