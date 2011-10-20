@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 
 $routes = new RouteCollection();
-$routes->add('hello', new Route('/hello/{name}'));
+$routes->add('hello', new Route('/hello/{name}'), array('name' => 'World'));
 
 //$request = Request::createFromGlobals();
 $request = Request::create('/hello/Tobias');
@@ -22,13 +22,10 @@ $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 
-$parameters = $matcher->match($request->getPathInfo());
+$request->attributes->add($matcher->match($request->getPathInfo()));
 
-print_r($parameters);
-exit;
-
-if ('/hello' == $request->getPathInfo()) {
-    $content = 'Hello '.$request->query->get('name', 'World');
+if ('hello' == $request->attributes->get('_route')) {
+    $content = 'Hello '.$request->get('name');
     $response = new Response($content);
 }
 else {
