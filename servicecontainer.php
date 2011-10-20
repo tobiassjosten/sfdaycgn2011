@@ -14,10 +14,15 @@ class Foo
 require_once __DIR__.'/autoload.php';
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
-$container = new Container();
+$container = new ContainerBuilder();
 
-$container->set('bar', new Bar());
-$container->set('foo', new Foo($container->get('bar')));
+$container->register('bar', 'Bar');
+$container
+    ->register('foo', 'Foo')
+    ->addArgument(new Reference('bar'))
+;
 
 $container->get('foo')->drink();
