@@ -10,4 +10,4 @@ $loader->register();
 
 $loader->registerNamespace('Symfony', __DIR__.'/symfony/src');
 
-$m = new Symfony\Component\ClassLoader\MapClassLoader();
+$m = new MapClassLoader();
