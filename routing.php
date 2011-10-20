@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCompiler;
 
 
 $routes1 = new RouteCollection();
@@ -39,3 +40,6 @@ print_r($matcher->match('/hello'));
 print_r($matcher->match('/hello/Tobias'));
 print_r($matcher->match('/hello_Tobias^25'));
 print_r($matcher->match('/ls/dir'));
+
+$compiler = new RouteCompiler(new Route('/hello', array('name' => 'World')));
+$compiler->compile());
