@@ -24,24 +24,6 @@ use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-// Configuration.
-
-class Hello
-{
-    public function index($name)
-    {
-        $response = new Response('Hello '.$name);
-        $response->setTtl(10);
-
-        return $response;
-    }
-
-    public function exception(Request $request)
-    {
-        return new Response('Exception: '.$request->attributes->get('exception')->getMessage(), 500);
-    }
-}
-
 $loader = new YamlFileLoader(new FileLocator(__DIR__));
 $routes = $loader->load('routes.yml');
 
@@ -72,7 +54,7 @@ class Framework implements HttpKernelInterface
     }
 }
 
-$request = Request::create('/hello1/Tobias', 'HEAD');
+$request = Request::create('/hello1/Tobias');
 
 $context = new RequestContext();
 $context->fromRequest($request);
@@ -81,7 +63,7 @@ $matcher = new UrlMatcher($routes, $context);
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new RouterListener($matcher));
 $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
-$dispatcher->addSubscriber(new ExceptionListener('Hello::exception'));
+$dispatcher->addSubscriber(new ExceptionListener('Acme\Hello::exception'));
 
 $resolver = new ControllerResolver();
 

@@ -11,6 +11,7 @@ $loader = new UniversalClassLoader();
 $loader->register();
 
 $loader->registerNamespaces(array(
+    'Acme'    => __DIR__.'/controller',
     'Symfony' =>__DIR__.'/symfony/src'
 ));
 

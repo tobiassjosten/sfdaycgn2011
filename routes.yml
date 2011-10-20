@@ -1,0 +1,3 @@
+hello:
+    pattern: /hello1/{name}
+    defaults: { _controller: 'Acme\Hello::index', 'name': 'World' }
